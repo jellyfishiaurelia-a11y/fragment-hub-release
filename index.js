@@ -1940,34 +1940,67 @@
   }
 
   // =========================================================================
-  // SillyTavern 扩展挂载与菜单注册
+  // SillyTavern 扩展挂载与菜单注册 (深度适配菜单精简器与自定义主题)
   // =========================================================================
-  function createExtensionMenuItem() {
-    // 1. 注入到魔法棒扩展菜单 (#extensions_menu)
+  function injectMenuItem() {
     const extensionsMenu = document.getElementById("extensions_menu");
-    if (extensionsMenu && !document.getElementById("st-fragment-hub-menu-item")) {
-      const menuItem = document.createElement("div");
-      menuItem.id = "st-fragment-hub-menu-item";
-      menuItem.className = "extension_menu_item list-group-item flex-container flexGap5";
-      menuItem.style.cursor = "pointer";
-      menuItem.innerHTML = `
-        <i class="fa-solid fa-note-sticky fa-fw"></i>
-        <span>灵感便签 (Fragment Hub)</span>
-      `;
-      menuItem.addEventListener("click", () => {
-        openMainModal();
+    if (!extensionsMenu) return;
+
+    if (document.getElementById("st-fragment-hub-menu-item")) return;
+
+    const menuItem = document.createElement("div");
+    menuItem.id = "st-fragment-hub-menu-item";
+    menuItem.className = "extension_menu_item list-group-item flex-container flexGap5";
+    menuItem.style.cursor = "pointer";
+    menuItem.innerHTML = `
+      <i class="fa-solid fa-note-sticky fa-fw"></i>
+      <span>灵感便签 (Fragment Hub)</span>
+    `;
+    menuItem.addEventListener("click", (e) => {
+      e.stopPropagation();
+      openMainModal();
+      // 如果菜单打开，关闭它
+      if (typeof jQuery !== "undefined" && jQuery("#extensions_menu").is(":visible")) {
+        jQuery("#extensions_menu").hide();
+      }
+    });
+
+    // 优先插入到菜单精简器的基础工具/常用分类，或者直接追加
+    const baseFolder = extensionsMenu.querySelector("[data-category*="工具"], [data-category*="常用"]") || extensionsMenu;
+    baseFolder.appendChild(menuItem);
+  }
+
+  function setupMenuObserver() {
+    injectMenuItem();
+
+    // 监听魔法棒按钮点击，每次展开菜单时确保按钮存在
+    const wandBtn = document.getElementById("extensionsMenuButton") || document.getElementById("wand_button") || document.querySelector(".fa-magic-wand-sparkles")?.closest("div");
+    if (wandBtn) {
+      wandBtn.addEventListener("click", () => {
+        setTimeout(injectMenuItem, 50);
+        setTimeout(injectMenuItem, 200);
       });
-      extensionsMenu.appendChild(menuItem);
     }
 
-    // 2. 注入到扩展设置面板 (#extension_settings / #extensions_settings)
+    // 监听 extensions_menu DOM 变动（适配菜单精简器重绘）
+    const menuEl = document.getElementById("extensions_menu");
+    if (menuEl) {
+      const observer = new MutationObserver(() => {
+        if (!document.getElementById("st-fragment-hub-menu-item")) {
+          injectMenuItem();
+        }
+      });
+      observer.observe(menuEl, { childList: true, subtree: true });
+    }
+
+    // 扩展设置抽屉面板挂载
     const extSettingsContainer = document.getElementById("extensions_settings") || document.getElementById("extension_settings");
     if (extSettingsContainer && !document.getElementById("st-fragment-hub-settings-entry")) {
       const panel = document.createElement("div");
       panel.id = "st-fragment-hub-settings-entry";
       panel.className = "extension_setting_item";
       panel.style.margin = "10px 0";
-      panel.style.padding = "10px";
+      panel.style.padding = "12px";
       panel.style.borderRadius = "8px";
       panel.style.background = "rgba(0, 0, 0, 0.15)";
       panel.innerHTML = `
@@ -1981,13 +2014,6 @@
       extSettingsContainer.appendChild(panel);
       document.getElementById("btn-st-fh-open-from-settings")?.addEventListener("click", openMainModal);
     }
-
-    // 如果酒馆菜单未完全就绪，延时再次探测挂载
-    setTimeout(() => {
-      if (!document.getElementById("st-fragment-hub-menu-item") || !document.getElementById("st-fragment-hub-settings-entry")) {
-        createExtensionMenuItem();
-      }
-    }, 1500);
   }
 
   // 绑定全局 Alt + F 快捷键呼出便签
@@ -2001,6 +2027,42 @@
       }
     }
   });
+
+  async function initExtension() {
+    loadStorage();
+
+    try {
+      let html = "";
+      try {
+        const templateResp = await fetch(new URL("template.html", import.meta.url));
+        if (templateResp.ok) html = await templateResp.text();
+      } catch (err) {
+        console.warn("[FragmentHub] Fetch template.html relative failed:", err);
+      }
+
+      if (!html) {
+        const fallbackResp = await fetch("/scripts/extensions/third-party/sillytavern-fragment-hub/template.html");
+        if (fallbackResp.ok) html = await fallbackResp.text();
+      }
+
+      if (!html) {
+        const fallbackResp2 = await fetch("/scripts/extensions/third-party/fragment-hub-release/template.html");
+        if (fallbackResp2.ok) html = await fallbackResp2.text();
+      }
+
+      if (html) {
+        const wrap = document.createElement("div");
+        wrap.innerHTML = html;
+        document.body.appendChild(wrap.firstElementChild);
+      }
+    } catch (err) {
+      console.error("[FragmentHub] Failed to load template.html:", err);
+    }
+
+    setupMenuObserver();
+    initUIEvents();
+    console.log("[FragmentHub] 灵感碎片 · 剧情与番外便签扩展初始化成功！");
+  }
 
   if (typeof jQuery !== "undefined") {
     jQuery(initExtension);

@@ -1,10 +1,64 @@
 /* ==========================================================================
-   SillyTavern Fragment Hub (灵感碎片 · 剧情与番外便签系统)
-   Scoped Morandi Low-Saturation Minimalist Design
+   SillyTavern Fragment Hub - Anti-Pollution Layer
    ========================================================================== */
 
 #st-fragment-hub-modal {
-  /* 莫兰迪低饱和色系与主题变量 */
+  position: fixed !important;
+  inset: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  z-index: 999999 !important;
+  background: rgba(18, 18, 20, 0.75) !important;
+  backdrop-filter: blur(10px) !important;
+  -webkit-backdrop-filter: blur(10px) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 16px !important;
+  box-sizing: border-box !important;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Microsoft YaHei", sans-serif !important;
+  font-size: 14px !important;
+  line-height: 1.5 !important;
+  color: #2b2a28 !important;
+  text-shadow: none !important;
+  filter: none !important;
+  opacity: 1 !important;
+}
+
+#st-fragment-hub-modal * {
+  box-sizing: border-box !important;
+  text-shadow: none !important;
+  filter: none !important;
+  letter-spacing: normal !important;
+  text-transform: none !important;
+}
+
+#st-fragment-hub-modal .st-fh-container {
+  position: relative !important;
+  width: 96vw !important;
+  max-width: 1200px !important;
+  height: 94vh !important;
+  max-height: 920px !important;
+  background-color: #f7f6f4 !important;
+  color: #2b2a28 !important;
+  border-radius: 16px !important;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.5) !important;
+  border: 1px solid #e3e1dc !important;
+  display: flex !important;
+  flex-direction: column !important;
+  overflow: hidden !important;
+  margin: 0 auto !important;
+}
+
+#st-fragment-hub-modal .brand-subtext { font-size: 12px; color: #6e6b66; font-weight: normal; margin-left: 4px; }
+#st-fragment-hub-modal .close-hub-btn { margin-left: 8px; }
+#st-fragment-hub-modal .btn-send-to-st-chat { color: #708a99; background: #eaf0f3; }
+#st-fragment-hub-modal .btn-send-to-st-chat:hover { background: #708a99; color: #fff; }
+#st-fragment-hub-modal .btn-editor-send-to-st-chat { color: #708a99; background: #eaf0f3; white-space: nowrap !important; }
+#st-fragment-hub-modal .btn-editor-send-to-st-chat:hover { background: #708a99; color: #fff; }
+
+:root {
+  /* 莫兰迪低饱和色系 */
   --bg-primary: #f7f6f4;          /* 宣纸暖白 */
   --bg-surface: #ffffff;
   --bg-subtle: #eeedea;           /* 莫兰迪米灰 */
@@ -40,92 +94,29 @@
   --shadow-md: 0 4px 14px rgba(43, 42, 40, 0.06);
   --shadow-lg: 0 10px 30px rgba(43, 42, 40, 0.09);
   --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
-
-  position: fixed;
-  inset: 0;
-  z-index: 99999;
-  background: rgba(18, 18, 20, 0.65);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 16px;
-  box-sizing: border-box;
-  font-family: var(--font-sans);
-  color: var(--text-main);
-  line-height: 1.5;
-  font-size: 14px;
 }
 
-/* SillyTavern 顶部栏按钮与菜单项样式 */
-.st-fragment-hub-icon-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 32px;
-  height: 32px;
-  cursor: pointer;
-  border-radius: 6px;
-  transition: all 0.2s ease;
-  color: inherit;
-}
-.st-fragment-hub-icon-btn:hover {
-  background: rgba(255, 255, 255, 0.15);
-  transform: scale(1.06);
-}
-.st-fragment-hub-icon-btn svg {
-  width: 20px;
-  height: 20px;
-  stroke: currentColor;
-  stroke-width: 2;
-  fill: none;
-}
-
-/* 弹窗弹出动画 */
-@keyframes st-fh-pop-in {
-  0% {
-    opacity: 0;
-    transform: scale(0.96) translateY(12px);
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1) translateY(0);
-  }
-}
-
-#st-fragment-hub-modal * {
+* {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
   -webkit-tap-highlight-color: transparent;
 }
 
-#st-fragment-hub-modal .st-fh-container {
-  position: relative;
-  width: 100%;
-  max-width: 1240px;
-  height: 92vh;
-  max-height: 920px;
+body {
   background-color: var(--bg-primary);
   color: var(--text-main);
-  border-radius: var(--radius-lg);
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
-  border: 1px solid var(--border-light);
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  animation: st-fh-pop-in 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  font-family: var(--font-sans);
+  line-height: 1.5;
+  font-size: 14px;
+  min-height: 100vh;
 }
 
-
-
-
-
-
-
 /* 解决弹窗出现时的页面背景穿透滚动问题 */
-
+body.modal-open {
+  overflow: hidden !important;
+  touch-action: none;
+}
 
 /* 纯线条图标 */
 .icon {
@@ -343,6 +334,8 @@ mark.search-highlight {
 }
 
 .icon-btn-action {
+  white-space: nowrap !important;
+  flex-shrink: 0 !important;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -662,6 +655,10 @@ mark.search-highlight {
 
 /* 卡片预览流 */
 .cards-grid {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 14px !important;
+  width: 100% !important;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 12px;
@@ -966,7 +963,16 @@ mark.search-highlight {
 }
 
 /* 编辑主体 (独立上下滑动，不影响底页) */
-.editor-
+.editor-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 14px 16px;
+  overflow-y: auto;
+  gap: 12px;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+}
 
 .title-input {
   width: 100%;
@@ -1302,7 +1308,15 @@ mark.find-match.find-match-current {
   max-width: 540px;
   max-height: 85vh;
 }
-.settings-
+.settings-body {
+  overflow-y: auto;
+  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+}
 .section-title-line {
   display: flex;
   justify-content: space-between;
@@ -1376,7 +1390,12 @@ mark.find-match.find-match-current {
   width: 100%;
   max-width: 440px;
 }
-.modal-dialog .modal-
+.modal-dialog .modal-body {
+  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
 .dialog-desc {
   font-size: 13px;
   color: var(--text-muted);
@@ -1456,7 +1475,9 @@ mark.find-match.find-match-current {
 
 /* 移动端精准响应式 (全面消除拥挤与遮挡) */
 @media (max-width: 640px) {
-  
+  body {
+    font-size: 13.5px;
+  }
   .navbar {
     padding: 6px 10px;
     height: 44px;
@@ -1480,6 +1501,10 @@ mark.find-match.find-match-current {
     padding: 5px 8px;
   }
   .cards-grid {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 14px !important;
+  width: 100% !important;
     grid-template-columns: 1fr;
   }
   .modal-overlay {
@@ -1501,6 +1526,8 @@ mark.find-match.find-match-current {
     gap: 4px;
   }
   .icon-btn-action {
+  white-space: nowrap !important;
+  flex-shrink: 0 !important;
     width: 28px;
     height: 28px;
   }
@@ -1516,7 +1543,10 @@ mark.find-match.find-match-current {
     padding: 4px 7px;
     font-size: 12px;
   }
-  .editor-
+  .editor-body {
+    padding: 12px 12px;
+    gap: 10px;
+  }
   .category-combined-picker {
     flex-direction: column;
   }
@@ -1554,7 +1584,14 @@ mark.find-match.find-match-current {
   max-height: 90vh;
 }
 
-.card-share-
+.card-share-body {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
 
 .share-ctrls-bar {
   display: flex;
@@ -1817,80 +1854,3 @@ mark.find-match.find-match-current {
   font-weight: 500;
 }
 
-
-/* === SillyTavern Integration Specific Styles === */
-.brand-subtext {
-  font-size: 12px;
-  color: var(--text-muted);
-  font-weight: normal;
-  margin-left: 4px;
-}
-
-.close-hub-btn {
-  margin-left: 8px;
-  background: var(--bg-subtle);
-  border: 1px solid var(--border-light);
-  color: var(--text-main);
-  border-radius: var(--radius-sm);
-  transition: all 0.2s ease;
-}
-.close-hub-btn:hover {
-  background: var(--danger-soft);
-  color: var(--danger);
-  border-color: var(--danger);
-}
-
-.btn-send-to-st-chat {
-  color: var(--morandi-blue);
-  background: var(--morandi-blue-soft);
-}
-.btn-send-to-st-chat:hover {
-  background: var(--morandi-blue);
-  color: #ffffff;
-}
-
-.btn-editor-send-to-st-chat {
-  color: var(--morandi-blue);
-  background: var(--morandi-blue-soft);
-}
-.btn-editor-send-to-st-chat:hover {
-  background: var(--morandi-blue);
-  color: #ffffff;
-}
-
-/* Ensure inner modal dialogs fit well inside container */
-#st-fragment-hub-modal .modal-overlay {
-  position: absolute;
-  inset: 0;
-  background: rgba(20, 20, 22, 0.45);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
-  z-index: 100;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-#st-fragment-hub-modal .editor-box {
-  width: 100%;
-  height: 100%;
-  max-width: 100%;
-  max-height: 100%;
-  border-radius: 0;
-}
-
-#st-fragment-hub-modal .toast {
-  position: absolute;
-  bottom: 24px;
-  left: 50%;
-  transform: translateX(-50%);
-  background-color: var(--text-main);
-  color: var(--bg-primary);
-  padding: 10px 22px;
-  border-radius: var(--radius-md);
-  font-size: 13px;
-  box-shadow: var(--shadow-lg);
-  z-index: 99999;
-  pointer-events: none;
-  animation: toast-fade 0.25s ease;
-}
