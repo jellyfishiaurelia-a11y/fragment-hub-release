@@ -1,0 +1,11 @@
+{
+  "name": "fragment-hub",
+  "display_name": "灵感碎片 · 剧情与番外便签 (Fragment Hub)",
+  "version": "1.0.0",
+  "description": "酒馆灵感便签、番外记录与剧情脑洞管理系统。支持分类标签多选、单篇/全局查找替换、敏感词打码、莫兰迪卡片高清导出、一键插入聊天输入框。",
+  "author": "Daigo",
+  "icon": "assets/icon.svg",
+  "js": "index.js",
+  "css": "style.css",
+  "homepage": "https://github.com/jellyfishiaurelia-a11y/fragment-hub-release"
+}

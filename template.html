@@ -1,0 +1,583 @@
+<div id="st-fragment-hub-modal" class="st-fh-modal-overlay" style="display: none;">
+  <div class="st-fh-container" id="st-fh-container">
+    
+    <!-- 顶部导航栏 -->
+    <header class="navbar">
+      <div class="brand">
+        <!-- 灵感碎片极简专属线条Logo -->
+        <svg class="icon brand-logo" viewBox="0 0 24 24">
+          <path d="M4 6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6z"/>
+          <path d="M12 8v8M8 12h8"/>
+          <circle cx="12" cy="12" r="1.5"/>
+        </svg>
+        <span class="brand-text">灵感碎片</span>
+        <span class="brand-subtext">· 剧情与番外便签</span>
+      </div>
+
+      <div class="nav-actions">
+        <!-- 批量多选管理 -->
+        <button class="icon-btn" id="btn-toggle-batch-mode" title="批量多选管理">
+          <svg class="icon" viewBox="0 0 24 24">
+            <polyline points="9 11 12 14 22 4"/>
+            <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+          </svg>
+        </button>
+
+        <!-- 一键打码全局管理与切换 -->
+        <button class="icon-btn" id="btn-toggle-redact-view" title="切换文本打码视图 (隐藏敏感词)">
+          <svg class="icon" viewBox="0 0 24 24">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+          </svg>
+        </button>
+
+        <!-- 分类/标签/打码设置 -->
+        <button class="icon-btn" id="btn-open-settings" title="分类、标签与打码设置">
+          <svg class="icon" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="3"/>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+          </svg>
+        </button>
+
+        <!-- 全局查找替换入口 -->
+        <button class="icon-btn" id="btn-open-global-replace" title="全局查找替换">
+          <svg class="icon" viewBox="0 0 24 24">
+            <circle cx="11" cy="11" r="8"/>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            <path d="M11 8v6M8 11h6"/>
+          </svg>
+        </button>
+
+        <!-- 数据备份/恢复 -->
+        <button class="icon-btn" id="btn-open-backup" title="数据备份与导入恢复">
+          <svg class="icon" viewBox="0 0 24 24">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+            <polyline points="7 10 12 15 17 10"/>
+            <line x1="12" y1="15" x2="12" y2="3"/>
+          </svg>
+        </button>
+
+        <!-- 新建碎片 -->
+        <button class="btn btn-primary" id="btn-create-fragment">
+          <svg class="icon" viewBox="0 0 24 24">
+            <line x1="12" y1="5" x2="12" y2="19"/>
+            <line x1="5" y1="12" x2="19" y2="12"/>
+          </svg>
+          <span>新建便签</span>
+        </button>
+
+        <!-- 关闭弹窗返回酒馆 -->
+        <button class="icon-btn close-hub-btn" id="btn-close-hub-modal" title="关闭便签返回酒馆">
+          <svg class="icon" viewBox="0 0 24 24">
+            <line x1="18" y1="6" x2="6" y2="18"/>
+            <line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- 批量管理悬浮吸顶栏 -->
+    <div class="batch-bar" id="batch-action-bar" style="display: none;">
+      <div class="batch-info">
+        <label class="checkbox-label">
+          <input type="checkbox" id="batch-select-all"> 全选 (<span id="batch-selected-count">0</span>)
+        </label>
+      </div>
+      <div class="batch-buttons">
+        <button class="btn btn-batch-action" id="btn-batch-set-cat">
+          <svg class="icon" viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+          <span>修改分类</span>
+        </button>
+        <button class="btn btn-batch-action" id="btn-batch-add-tags">
+          <svg class="icon" viewBox="0 0 24 24"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+          <span>追加标签</span>
+        </button>
+        <button class="btn btn-batch-action btn-batch-delete" id="btn-batch-delete">
+          <svg class="icon" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+          <span>批量删除</span>
+        </button>
+        <button class="icon-btn close-batch-btn" id="btn-batch-cancel" title="退出批量模式">&times;</button>
+      </div>
+    </div>
+
+    <!-- 主界面：列表与预览流 -->
+    <main class="main-content" id="main-view">
+      
+      <!-- 搜索与筛选控制栏 -->
+      <section class="control-panel">
+        <div class="search-box">
+          <svg class="icon search-icon" viewBox="0 0 24 24">
+            <circle cx="11" cy="11" r="8"/>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+          </svg>
+          <input type="text" id="search-input" placeholder="搜索剧情关键词、角色、脑洞伏笔、标签...">
+          <button class="clear-btn" id="search-clear" style="display: none;">&times;</button>
+        </div>
+
+        <!-- 类别水平滚动栏 (带碎片个数展示) -->
+        <div class="categories-bar-wrapper">
+          <div class="categories-bar" id="category-chips">
+            <!-- 动态生成类别气泡 -->
+          </div>
+        </div>
+
+        <!-- 常用标签池 (支持多选筛选、AND/OR模式切换、折叠/展开) -->
+        <div class="tag-pool-wrapper" id="tag-pool-container">
+          <div class="tag-pool-header" id="tag-pool-toggle-btn">
+            <div class="tag-pool-title-group">
+              <span class="tag-pool-label">标签多选筛选</span>
+              <span class="tag-pool-count" id="tag-pool-count">0 个</span>
+              <div class="tag-pool-selected-badge" id="tag-pool-selected-badge" style="display: none;">
+                已选: <span id="tag-pool-selected-count">0</span>
+              </div>
+            </div>
+            <div class="tag-pool-ctrl-group">
+              <div class="match-mode-switch" id="match-mode-switch" title="多标签匹配模式切换">
+                <button type="button" class="btn-mode active" id="btn-mode-and" title="同时包含所有选中标签 (AND)">AND</button>
+                <button type="button" class="btn-mode" id="btn-mode-or" title="包含任一选中标签即可 (OR)">OR</button>
+              </div>
+              <div class="tag-pool-expand-hint">
+                <span id="tag-collapse-text">收起</span>
+                <svg class="icon arrow-icon" id="tag-collapse-arrow" viewBox="0 0 24 24">
+                  <polyline points="6 9 12 15 18 9"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+          <div class="tag-pool-chips" id="tag-pool">
+            <!-- 动态生成标签气泡 -->
+          </div>
+        </div>
+      </section>
+
+      <!-- 列表概览状态与智能排序栏 -->
+      <section class="status-sort-bar">
+        <span class="status-text" id="fragment-count-text">共 0 条灵感便签</span>
+        
+        <div class="sort-select-wrapper">
+          <label for="sort-select" class="sort-label">排序:</label>
+          <select id="sort-select" class="custom-select">
+            <option value="updated_desc">最近修改 (新→旧)</option>
+            <option value="updated_asc">最早修改 (旧→新)</option>
+            <option value="created_desc">创建时间 (新→旧)</option>
+            <option value="char_desc">字数最多 (长→短)</option>
+            <option value="char_asc">字数最少 (短→长)</option>
+          </select>
+        </div>
+      </section>
+
+      <!-- 卡片网格流 -->
+      <section class="cards-grid" id="cards-grid">
+        <!-- 动态生成碎片卡片 -->
+      </section>
+
+      <!-- 空状态提示 -->
+      <div class="empty-state" id="empty-state" style="display: none;">
+        <div class="empty-icon-wrap">
+          <svg class="icon empty-icon" viewBox="0 0 24 24">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/>
+            <line x1="12" y1="18" x2="12" y2="12"/>
+            <line x1="9" y1="15" x2="15" y2="15"/>
+          </svg>
+        </div>
+        <p class="empty-text">暂无相关便签，点击右上角「新建便签」记录突发灵感吧</p>
+      </div>
+    </main>
+
+    <!-- 弹窗 / 全屏编辑视图 -->
+    <div class="modal-overlay" id="editor-modal" style="display: none;">
+      <div class="modal-content editor-box">
+        <div class="modal-header">
+          <div class="header-left">
+            <button class="icon-btn back-btn" id="btn-close-editor" title="返回列表">
+              <svg class="icon" viewBox="0 0 24 24">
+                <line x1="19" y1="12" x2="5" y2="12"/>
+                <polyline points="12 19 5 12 12 5"/>
+              </svg>
+            </button>
+            <span id="editor-modal-mode-title" class="editor-title-text">编辑便签</span>
+          </div>
+          <div class="header-right">
+            <!-- 导出分享卡片按钮 -->
+            <button class="icon-btn-action" id="btn-open-card-share" title="排版并导出美化卡片">
+              <svg class="icon" viewBox="0 0 24 24">
+                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                <circle cx="8.5" cy="8.5" r="1.5"/>
+                <polyline points="21 15 16 10 5 21"/>
+              </svg>
+              <span>排版卡片</span>
+            </button>
+
+            <!-- 填入当前酒馆输入框 -->
+            <button class="icon-btn-action" id="btn-editor-send-to-st-chat" title="将正文直接填入酒馆当前输入框">
+              <svg class="icon" viewBox="0 0 24 24">
+                <line x1="22" y1="2" x2="11" y2="13"/>
+                <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+              </svg>
+              <span>填入输入框</span>
+            </button>
+
+            <!-- 撤回按钮 -->
+            <button class="icon-btn-action" id="btn-editor-undo" title="撤回 (Ctrl+Z)" disabled>
+              <svg class="icon" viewBox="0 0 24 24">
+                <polyline points="1 4 1 10 7 10"/>
+                <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/>
+              </svg>
+            </button>
+
+            <!-- 重做按钮 -->
+            <button class="icon-btn-action" id="btn-editor-redo" title="重做 (Ctrl+Y)" disabled>
+              <svg class="icon" viewBox="0 0 24 24">
+                <polyline points="23 4 23 10 17 10"/>
+                <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
+              </svg>
+            </button>
+
+            <!-- 单篇查找替换 -->
+            <button class="icon-btn-action" id="btn-toggle-doc-replace" title="展开单篇查找替换">
+              <svg class="icon" viewBox="0 0 24 24">
+                <circle cx="11" cy="11" r="8"/>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+              </svg>
+              <span>查找替换</span>
+            </button>
+
+            <button class="btn btn-outline btn-editor-delete" id="btn-delete-fragment" style="display:none;">删除</button>
+            <button class="btn btn-primary btn-editor-save" id="btn-save-fragment">保存</button>
+          </div>
+        </div>
+
+        <!-- 单篇搜索替换小面板 (支持前后导航、精准定位高亮) -->
+        <div class="doc-replace-panel" id="doc-replace-panel" style="display: none;">
+          <div class="replace-row">
+            <div class="replace-input-wrap">
+              <svg class="icon search-mini" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              <input type="text" id="doc-find-input" placeholder="在当前便签查找...">
+            </div>
+            <div class="replace-input-wrap">
+              <svg class="icon replace-mini" viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+              <input type="text" id="doc-replace-input" placeholder="替换为...">
+            </div>
+          </div>
+          <div class="replace-actions-row">
+            <div class="match-nav-group">
+              <span class="match-count-badge" id="doc-find-match-count">0 / 0</span>
+              <button class="icon-btn-sm" id="btn-doc-find-prev" title="上一个匹配项">
+                <svg class="icon" viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"/></svg>
+              </button>
+              <button class="icon-btn-sm" id="btn-doc-find-next" title="下一个匹配项">
+                <svg class="icon" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+              </button>
+            </div>
+            <div class="replace-btn-group">
+              <button class="btn-sm" id="btn-doc-replace-one" title="替换当前选中的这一处匹配">替换当前</button>
+              <button class="btn-sm btn-primary-sm" id="btn-doc-replace-all" title="一键替换正文中全部匹配项">替换全部</button>
+              <button class="icon-btn-sm" id="btn-close-doc-replace" title="关闭查找">&times;</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 编辑器主体表单 -->
+        <div class="editor-body">
+          <input type="text" id="editor-title" class="editor-title-input" placeholder="输入便签标题（如：雨夜初遇、雪山追逐战、人物秘密伏笔...）">
+
+          <!-- 分类选择与新建行 -->
+          <div class="editor-meta-row">
+            <div class="meta-item">
+              <label>所属分类</label>
+              <div class="cat-select-container">
+                <select id="editor-category" class="custom-select"></select>
+                <input type="text" id="editor-custom-cat" class="custom-cat-input" placeholder="输入新分类名" style="display:none;">
+                <button type="button" class="btn-sm" id="btn-add-custom-cat">新增分类</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 标签多选与点选面板 -->
+          <div class="editor-tags-section">
+            <label class="tags-section-label">标签设定 (逗号分隔，支持智能联想与历史库快捷点选)</label>
+            <div class="tags-input-wrapper">
+              <input type="text" id="editor-tags" class="editor-tags-input" placeholder="输入或从下方快速点选标签 (例: 伏笔, 情感转折, 战斗)">
+              
+              <!-- 实时智能标签联想匹配下拉框 -->
+              <div class="tag-autocomplete-dropdown" id="tag-autocomplete-dropdown" style="display: none;"></div>
+            </div>
+
+            <!-- 历史标签快速添加池 -->
+            <div class="editor-history-tags-panel" id="editor-history-tags-panel">
+              <div class="history-header" id="history-tags-toggle-btn">
+                <span class="history-label">所有已建标签库 (<span id="editor-history-count">0</span>)</span>
+                <div class="history-toggle-hint">
+                  <span id="editor-tag-collapse-text">展开</span>
+                  <svg class="icon arrow-icon" id="editor-tag-collapse-arrow" viewBox="0 0 24 24">
+                    <polyline points="6 9 12 15 18 9"/>
+                  </svg>
+                </div>
+              </div>
+              <div class="history-tags-list" id="editor-history-tags-list" style="display:none;"></div>
+            </div>
+          </div>
+
+          <!-- 正文编辑区 (支持查找时莫兰迪双层高亮同步镜面层) -->
+          <div class="editor-textarea-wrapper" id="editor-textarea-wrapper">
+            <div class="editor-highlights-backdrop" id="editor-highlights-backdrop"></div>
+            <textarea id="editor-content" class="editor-textarea" placeholder="在此记录你的剧情梗、对白碎片、灵感伏笔或番外短篇..."></textarea>
+          </div>
+        </div>
+
+        <!-- 底部状态统计栏 -->
+        <div class="editor-footer">
+          <div class="footer-stats">
+            <span>字数: <b id="editor-char-count">0</b></span>
+            <span class="stat-divider">|</span>
+            <span>行数: <b id="editor-line-count">0</b></span>
+          </div>
+          <div class="footer-hint">
+            <span>快捷键: Ctrl+S 保存 | Ctrl+Z 撤回 | Ctrl+Y 重做 | ESC 退出</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 卡片导出与排版分享弹窗 -->
+    <div class="modal-overlay" id="card-share-modal" style="display: none;">
+      <div class="modal-content modal-dialog card-share-dialog">
+        <div class="modal-header">
+          <div class="modal-title">
+            <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+            <span>排版卡片与美化导出</span>
+          </div>
+          <button class="icon-btn" id="btn-close-card-share">&times;</button>
+        </div>
+
+        <div class="modal-body card-share-body">
+          <!-- 卡片样式排版控制栏 -->
+          <div class="share-controls">
+            <div class="control-row">
+              <span class="ctrl-label">莫兰迪色系:</span>
+              <div class="theme-picker" id="share-theme-picker">
+                <button type="button" class="theme-btn theme-btn-warm active" data-theme="morandi-warm" title="暖日暖杏"></button>
+                <button type="button" class="theme-btn theme-btn-green" data-theme="morandi-green" title="豆沙灰绿"></button>
+                <button type="button" class="theme-btn theme-btn-blue" data-theme="morandi-blue" title="迷雾冷蓝"></button>
+                <button type="button" class="theme-btn theme-btn-purple" data-theme="morandi-purple" title="丁香柔紫"></button>
+                <button type="button" class="theme-btn theme-btn-dark" data-theme="morandi-dark" title="暗炭素灰"></button>
+              </div>
+            </div>
+
+            <div class="control-row-switches">
+              <label class="switch-label"><input type="checkbox" id="share-toggle-redact" checked> 应用打码遮罩</label>
+              <label class="switch-label"><input type="checkbox" id="share-toggle-tags" checked> 显示标签</label>
+              <label class="switch-label"><input type="checkbox" id="share-toggle-footer" checked> 水印落款</label>
+            </div>
+          </div>
+
+          <!-- 可视化卡片排版预览区 (可平滑上下滚动浏览完整卡片) -->
+          <div class="share-preview-scroll-wrapper" id="share-preview-scroll-container">
+            <div class="share-card theme-morandi-warm" id="share-render-card">
+              <div class="share-card-header">
+                <span class="share-card-cat" id="share-preview-cat">分类</span>
+                <span class="share-card-date" id="share-preview-date">日期</span>
+              </div>
+              <h2 class="share-card-title" id="share-preview-title">标题</h2>
+              <div class="share-card-content" id="share-preview-content">正文内容...</div>
+              <div class="share-card-tags" id="share-preview-tags"></div>
+              <div class="share-card-footer" id="share-preview-footer">
+                <div class="share-brand-info">
+                  <svg class="icon share-mini-logo" viewBox="0 0 24 24"><path d="M4 6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6z"/><path d="M12 8v8M8 12h8"/><circle cx="12" cy="12" r="1.5"/></svg>
+                  <span>灵感碎片 · Fragment Hub</span>
+                </div>
+                <span class="share-word-count" id="share-preview-words">0 字</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 手机端图片预览弹层（生成图片后供长按保存） -->
+          <div class="share-preview-img-box" id="share-preview-img-box" style="display: none;">
+            <div class="share-img-hint">
+              <svg class="icon" viewBox="0 0 24 24"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+              <span>长按下方图片可直接保存到系统相册</span>
+            </div>
+            <img id="share-preview-img" alt="生成的分享卡片">
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button class="btn btn-outline" id="btn-copy-card-text">
+            <svg class="icon" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            <span>复制排版文本</span>
+          </button>
+          <button class="btn btn-primary" id="btn-export-card-png">
+            <svg class="icon" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            <span>生成高清 PNG 导出</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 分类、标签与一键打码设置管理弹窗 -->
+    <div class="modal-overlay" id="settings-modal" style="display: none;">
+      <div class="modal-content modal-dialog settings-dialog">
+        <div class="modal-header">
+          <div class="modal-title">
+            <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+            <span>分类、标签与敏感词打码库设置</span>
+          </div>
+          <button class="icon-btn" id="btn-close-settings">&times;</button>
+        </div>
+
+        <div class="modal-body settings-body">
+          <!-- 一键打码管理区 -->
+          <div class="settings-section">
+            <div class="settings-section-title">
+              <span>一键遮罩打码敏感词库</span>
+              <span class="settings-hint">开启打码后，下列词汇将在便签卡片与分享排版中被纯黑遮罩保护</span>
+            </div>
+            <div class="manage-input-row">
+              <input type="text" id="new-redact-input" class="dialog-input" placeholder="输入敏感词 (支持逗号分隔多个)...">
+              <button class="btn btn-primary" id="btn-add-redact-word">添加打码词</button>
+            </div>
+            <div class="chips-manage-box" id="manage-redact-chips"></div>
+          </div>
+
+          <!-- 分类管理区 -->
+          <div class="settings-section">
+            <div class="settings-section-title">
+              <span>分类管理</span>
+              <span class="settings-hint">管理自定义便签分类目录</span>
+            </div>
+            <div class="manage-input-row">
+              <input type="text" id="new-cat-input" class="dialog-input" placeholder="输入新分类名称...">
+              <button class="btn btn-primary" id="btn-create-new-cat">新增分类</button>
+            </div>
+            <div class="chips-manage-box" id="manage-cat-chips"></div>
+          </div>
+
+          <!-- 标签管理区 -->
+          <div class="settings-section">
+            <div class="settings-section-title">
+              <span>全量标签库管理</span>
+              <span class="settings-hint">管理常用标签库词汇</span>
+            </div>
+            <div class="manage-input-row">
+              <input type="text" id="new-tag-input" class="dialog-input" placeholder="输入新标签名 (可逗号分隔批量添加)...">
+              <button class="btn btn-primary" id="btn-create-new-tag">新增标签</button>
+            </div>
+            <div class="chips-manage-box" id="manage-tag-chips"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 批量修改分类弹窗 -->
+    <div class="modal-overlay" id="batch-cat-modal" style="display: none;">
+      <div class="modal-content modal-dialog">
+        <div class="modal-header">
+          <div class="modal-title"><span>批量修改便签分类</span></div>
+          <button class="icon-btn" id="btn-close-batch-cat">&times;</button>
+        </div>
+        <div class="modal-body">
+          <p class="dialog-desc">已选择 <b id="batch-cat-count-text">0</b> 篇便签，请选择统一移动到的目标分类：</p>
+          <select id="batch-cat-select" class="custom-select" style="width:100%;"></select>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-outline" id="btn-cancel-batch-cat">取消</button>
+          <button class="btn btn-primary" id="btn-confirm-batch-cat">确认修改</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 批量添加标签弹窗 -->
+    <div class="modal-overlay" id="batch-tags-modal" style="display: none;">
+      <div class="modal-content modal-dialog">
+        <div class="modal-header">
+          <div class="modal-title"><span>批量追加标签</span></div>
+          <button class="icon-btn" id="btn-close-batch-tags">&times;</button>
+        </div>
+        <div class="modal-body">
+          <p class="dialog-desc">已选择 <b id="batch-tags-count-text">0</b> 篇便签，将为它们追加下列标签（保留原有标签）：</p>
+          <input type="text" id="batch-tags-input" class="dialog-input" placeholder="输入追加标签，例: 伏笔, 虐心, 剧情转折">
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-outline" id="btn-cancel-batch-tags">取消</button>
+          <button class="btn btn-primary" id="btn-confirm-batch-tags">确认追加</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 全局查找替换弹窗 -->
+    <div class="modal-overlay" id="global-replace-modal" style="display: none;">
+      <div class="modal-content modal-dialog">
+        <div class="modal-header">
+          <div class="modal-title">
+            <svg class="icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><path d="M11 8v6M8 11h6"/></svg>
+            <span>全局查找与批量替换</span>
+          </div>
+          <button class="icon-btn" id="btn-close-global-replace">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="form-label">查找文本 (区分大小写)</label>
+            <input type="text" id="global-find-text" class="dialog-input" placeholder="例如: 角色旧名、旧设定词...">
+          </div>
+          <div class="form-group">
+            <label class="form-label">替换为</label>
+            <input type="text" id="global-replace-text" class="dialog-input" placeholder="例如: 角色新名、修改后的设定词...">
+          </div>
+          <div class="form-group">
+            <label class="form-label">限定替换范围</label>
+            <select id="global-replace-scope" class="custom-select" style="width:100%;">
+              <option value="">全部分类 (所有便签)</option>
+            </select>
+          </div>
+          <div class="replace-result-box" id="global-replace-result" style="display:none;"></div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-outline" id="btn-cancel-global-replace">取消</button>
+          <button class="btn btn-primary" id="btn-exec-global-replace">执行全局替换</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 数据备份与导出导入弹窗 -->
+    <div class="modal-overlay" id="backup-modal" style="display: none;">
+      <div class="modal-content modal-dialog">
+        <div class="modal-header">
+          <div class="modal-title">
+            <svg class="icon" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            <span>数据全量备份与导入恢复</span>
+          </div>
+          <button class="icon-btn" id="btn-close-backup">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div class="backup-section">
+            <h4>导出全量 JSON 备份</h4>
+            <p class="dialog-desc">导出包含所有便签正文、分类、标签与打码词库的完整 JSON 备份文件，方便多设备迁移。</p>
+            <button class="btn btn-primary" id="btn-download-json-backup">导出 JSON 备份文件</button>
+          </div>
+          <hr class="section-divider">
+          <div class="backup-section">
+            <h4>导入 JSON 备份</h4>
+            <p class="dialog-desc">上传此前备份的 .json 文件进行数据恢复：</p>
+            <div class="import-mode-select">
+              <label class="radio-label">
+                <input type="radio" name="import-mode" value="merge" checked>
+                <span>增量合并 (保留现有便签，跳过同名重复)</span>
+              </label>
+              <label class="radio-label">
+                <input type="radio" name="import-mode" value="overwrite">
+                <span>全量覆盖 (清空现有便签并完全还原)</span>
+              </label>
+            </div>
+            <input type="file" id="backup-file-input" accept=".json" style="display: none;">
+            <button class="btn btn-outline" id="btn-trigger-file-import">选择备份文件恢复</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 底部简易提示条 (Toast) -->
+    <div class="toast" id="toast" style="display: none;"></div>
+
+  </div>
+</div>
